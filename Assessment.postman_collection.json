@@ -1,0 +1,156 @@
+{
+	"info": {
+		"_postman_id": "b6839c8e-4843-1f20-8228-6607fbff7eed",
+		"name": "Assessment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "add property",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a55083a8-55be-4d96-9c1e-55621a7b6cf4",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Includes Valid Key\", function (){",
+							"    pm.expect(pm.response.json()).to.include.key(\"owner\");",
+							"})",
+							"",
+							"pm.test(\"Includes Results Object\", function () {",
+							"   pm.expect(pm.response.json()).to.include.key(\"id\");",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/xml"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"owner\":\"MMMMona\",\"status\":\"active\",\"address\":[1,2],\"notes\":[\"hello\",\"check\"]}"
+				},
+				"url": {
+					"raw": "localhost:1337/property",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"property"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update property status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "da1ecde0-0415-449a-8a11-26431f0f1324",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Includes Valid Key\", function (){",
+							"    pm.expect(pm.response.json()).to.include.key(\"message\");",
+							"})",
+							"",
+							"pm.test(\"Update Property Status Successeded\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.message).to.eql(\"Updated.Successfully\");",
+							"});",
+							"",
+							"pm.test(\"Includes Results Object\", function () {",
+							"   pm.expect(pm.response.json()).to.include.key(\"data\");",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"status\":\"active\"}"
+				},
+				"url": {
+					"raw": "localhost:1337/api/property/5ba0d372e6cd1e6c600ae636",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"api",
+						"property",
+						"5ba0d372e6cd1e6c600ae636"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "list properties",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e3715ce4-cd74-446c-b188-9152a308874e",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Includes Valid Key\", function (){",
+							"    pm.expect(pm.response.json()).to.include.key(\"data\");",
+							"})",
+							"",
+							"let firstProperty = pm.response.json().data[0];",
+							"pm.environment.set('propertyId',firstProperty._id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:1337/api/property",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"api",
+						"property"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
